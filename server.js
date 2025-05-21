@@ -1,11 +1,9 @@
-// server.js
+require('dotenv').config(); // Load environment variables FIRST
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
-// Replace this with your MongoDB connection string
-
 
 const app = express();
 const PORT = 5000;
@@ -14,10 +12,14 @@ const PORT = 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
+// Debug log
+console.log('Mongo URI:', process.env.MONGO_URL);
+
 // Connect to MongoDB
-mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('✅ MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
+
 
 // Define a schema and model
 const contactSchema = new mongoose.Schema({
