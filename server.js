@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 // Replace this with your MongoDB connection string
-const MONGO_URI = 'mongodb+srv://priyanshu_rangari:20112002%40Pr@cluster0.enbgf.mongodb.net/FosDataDB?retryWrites=true&w=majority&appName=Cluster0';
+
 
 const app = express();
 const PORT = 5000;
