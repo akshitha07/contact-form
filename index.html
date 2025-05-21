@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact Form</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <form id="contactForm" class="contact-form">
+      <h1>Contact Form</h1>
+
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">mail</label>
+        <input type="email" name="email" id="email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone (with country code)</label>
+        <input type="tel" name="phone" id="phone" placeholder="+1 1234567890" required />
+      </div>
+<div class="form-group">
+  <label for="country">Country</label>
+  <select name="country" id="country" required>
+    <option value="">Select country</option>
+    <option value="USA">USA</option>
+    <option value="Canada">Canada</option>
+  </select>
+</div>
+
+<div class="form-group">
+  <label for="state">State / Province</label>
+  <select name="state" id="state" required>
+    <option value="">Select state or province</option>
+  </select>
+</div>
+
+
+<button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script>
+  const statesByCountry = {
+    USA: [
+      "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
+      "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho",
+      "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine",
+      "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
+      "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
+      "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio",
+      "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina",
+      "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia",
+      "Washington", "West Virginia", "Wisconsin", "Wyoming"
+    ],
+    Canada: [
+      "Alberta", "British Columbia", "Manitoba", "New Brunswick",
+      "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia",
+      "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan",
+      "Yukon"
+    ]
+  
+  };
+
+  const countrySelect = document.getElementById("country");
+  const stateSelect = document.getElementById("state");
+
+  countrySelect.addEventListener("change", function () {
+    const selectedCountry = this.value;
+    const states = statesByCountry[selectedCountry] || [];
+
+    stateSelect.innerHTML = '<option value="">Select state or province</option>';
+    states.forEach(state => {
+      const option = document.createElement("option");
+      option.value = state;
+      option.textContent = state;
+      stateSelect.appendChild(option);
+    });
+  });
+   
+
+  document.getElementById('contactForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch('http://localhost:5000/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert(result.message);
+        this.reset();
+        stateSelect.innerHTML = '<option value="">Select state or province</option>'; // Clear state dropdown
+      } else {
+        alert('Something went wrong: ' + result.message);
+      }
+    } catch (error) {
+      alert('Error: Could not submit form.');
+      console.error(error);
+    }
+  });
+</script>
+
+</body>
+</html>
