@@ -44,6 +44,15 @@
 
 <button type="submit">Submit</button>
     </form>
+
+    <div id="successModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p> Thanks for Submiting the form </p>
+    <h2>We’ll reachout to you soon!</h2>
+  </div>
+</div>
+
   </div>
 
   <script>
@@ -65,7 +74,6 @@
       "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan",
       "Yukon"
     ]
-  
   };
 
   const countrySelect = document.getElementById("country");
@@ -83,7 +91,6 @@
       stateSelect.appendChild(option);
     });
   });
-   
 
   document.getElementById('contactForm').addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -100,9 +107,9 @@
       const result = await response.json();
 
       if (response.ok) {
-        alert(result.message);
         this.reset();
-        stateSelect.innerHTML = '<option value="">Select state or province</option>'; // Clear state dropdown
+        stateSelect.innerHTML = '<option value="">Select state or province</option>';
+        showModal(); // Show success modal
       } else {
         alert('Something went wrong: ' + result.message);
       }
@@ -111,7 +118,43 @@
       console.error(error);
     }
   });
+
+function showModal() {
+  document.getElementById('successModal').style.display = 'flex';
+}
+
+// Close on click of ×
+document.getElementById('closeModalBtn').addEventListener('click', function () {
+  document.getElementById('successModal').style.display = 'none';
+});
+
+// Close on outside click
+window.addEventListener('click', function (e) {
+  const modal = document.getElementById('successModal');
+  if (e.target === modal) {
+    modal.style.display = 'none';
+  }
+});
+
+
+
+  // Modal close logic
+  document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("successModal");
+    const closeBtn = document.querySelector(".close");
+
+    closeBtn.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+  });
 </script>
+
 
 </body>
 </html>

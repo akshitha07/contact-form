@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(express.json())
 
 // Debug log
-console.log('Mongo URI:', process.env.MONGO_URL);
+// console.log('Mongo URI:', process.env.MONGO_URL);
 
 app.use(express.static(path.join(__dirname, '../public')));
 
